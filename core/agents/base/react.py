@@ -58,9 +58,6 @@ async def main():
         }
         result = await graph.ainvoke(inputs, config=config)
         print(result)
-        # async for chunk in graph.astream(inputs, stream_mode="values", config=config):
-        #     last_message = chunk["messages"][-1]
-        #     print(last_message.content)
 
 if __name__ == "__main__":
     asyncio.run(main())
