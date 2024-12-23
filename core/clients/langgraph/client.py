@@ -1,17 +1,24 @@
-from typing import Any, Callable
+from typing import Any
 import logging
 from langchain_core.tools import StructuredTool
 from ..common.mcp import BaseMCPClient
 from ..common.utils import create_pydantic_model_from_json_schema
-import asyncio
 logger = logging.getLogger(__name__)
 
 class LanggraphMCPClient(BaseMCPClient):
 
     def tool_call(self, tool_name: str) -> Any:
+        """Create an asynchronous function to call a tool by its name.
+
+        Args:
+            tool_name: The name of the tool to be called.
+
+        Returns:
+            An asynchronous function that executes the tool with the provided arguments.
+        """
 
         async def tool_function(*args: Any, **kwargs: Any) -> Any:
-            print(f"Executing toolwith args: {args} and kwargs: {kwargs}, {tool_name}")
+            print(f"Executing tool with args: {args} and kwargs: {kwargs}, {tool_name}")
             result = await self.session.call_tool(tool_name, arguments=kwargs)
             return result
         
@@ -20,15 +27,14 @@ class LanggraphMCPClient(BaseMCPClient):
     def wrap_tool(
         self, tool: Any, **kwargs: Any
     ) -> StructuredTool:
-        """Wrap a tool as a CrewAI StructuredTool.
+        """Wrap a tool as a StructuredTool instance.
 
         Args:
-            tool_name: The name of the tool to wrap.
-            tool_definition: The definition of the tool to wrap.
+            tool: The tool object to wrap.
             **kwargs: Additional keyword arguments for tool configuration.
 
         Returns:
-            A StructuredTool instance.
+            A StructuredTool instance configured with the provided tool and arguments.
         """
 
         return StructuredTool.from_function(
