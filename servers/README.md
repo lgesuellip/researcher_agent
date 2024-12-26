@@ -1,6 +1,6 @@
-# website_firecrawl_service MCP Server
+# website_firecrawl_service - MCP Server
 
-🔍 Internet research just got smarter! Built an MCP server that turns any website into structured, relevant content based on your queries! 
+🔍 Internet research just got smarter! Built an MCP server that turns any website into structured, relevant content based on your queries!
 
 Using @Firecrawl's powerful features (mapping, selection, scraping), combined with GPT-4o for smart URL filtering, it's like having an AI research assistant that knows exactly what you're looking for! Works seamlessly with Claude, or any MCP-compatible client!
 
