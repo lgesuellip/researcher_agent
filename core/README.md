@@ -1,111 +1,136 @@
-# website_firecrawl_service MCP server
+# LangGraph MCP Integration
 
-This tool leverages Firecrawl to generate concise summaries of web pages directly from their URLs. Firecrawl processes the content of the provided website, extracting key insights and metadata to deliver a brief, focused summary.
+This repository demonstrates the integration of LangGraph with MCP servers. This integration allows you to build powerful agent-based applications that can interact with both MCP servers and external services.
 
-## Components
+## Features
 
-### Resources
+- Seamless integration of LangGraph with MCP servers
+- Support for React-based agents using MCP tools
+- Integration with Arcade and custom services (like Firecrawl)
+- Asynchronous tool execution
+- Type-safe tool wrapping with Pydantic models
 
-The server implements a simple note storage system with:
-- Custom note:// URI scheme for accessing individual notes
-- Each note resource has a name, description and text/plain mimetype
+Make sure to set up your environment variables in a `.env` file:
 
-### Prompts
+```env
+OPENAI_API_KEY=your_openai_api_key
+ARCADE_API_KEY=your_arcade_api_key
+ARCADE_USER_ID=your_arcade_user_id
+```
 
-The server provides a single prompt:
-- summarize-notes: Creates summaries of all stored notes
-  - Optional "style" argument to control detail level (brief/detailed)
-  - Generates prompt combining all current notes with style preference
+### Development Commands
 
-### Tools
+```bash
+ uv run agents/base/react.py
+```
 
-The server implements one tool:
-- add-note: Adds a new note to the server
-  - Takes "name" and "content" as required string arguments
-  - Updates server state and notifies clients of resource changes
+## Architecture
 
-## Configuration
+![MCP Architecture](mcp_architecture.png)
 
-[TODO: Add configuration details specific to your implementation]
+### Components
 
-## Quickstart
+1. **LangGraph Agent**
+   - React Agent: Implements the ReAct pattern for reasoning and action
+   - LangGraph MCP Client: Bridges LangGraph with MCP servers
 
-### Install
+2. **MCP Servers**
+   - Firecrawl Server: Provides web crawling capabilities
 
-#### Claude Desktop
+3. **Arcade Server**: Offers integration with various services, its so familiar with MCP.
 
-On MacOS: `~/Library/Application\ Support/Claude/claude_desktop_config.json`
-On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
+## Usage
 
-<details>
-  <summary>Development/Unpublished Servers Configuration</summary>
-  ```
-  "mcpServers": {
-    "website_firecrawl_service": {
-      "command": "uv",
-      "args": [
+### Basic LangGraph MCP Client
+
+The `LanggraphMCPClient` class provides a bridge between LangGraph and MCP servers:
+
+```python
+from clients.langgraph.client import LanggraphMCPClient
+from mcp import StdioServerParameters
+
+# Configure your MCP server
+server_params = StdioServerParameters(
+    command="uv",
+    args=[
         "--directory",
-        "/Users/lgesuellip/Desktop/mcp_firecrawl/website_service",
+        "/path/to/your/service",
         "run",
-        "website_firecrawl_service"
-      ]
+        "website-firecrawl-service"
+    ]
+)
+
+# Use the client to get tools from the MCP server
+async with LanggraphMCPClient(server_params=server_params) as mcp_client:
+    tools = await mcp_client.get_tools()
+```
+
+### Creating a React Agent with MCP Tools
+
+Here's an example of creating a React agent that combines MCP tools with Arcade services:
+
+```python
+from langchain_core.messages import HumanMessage
+from langchain_openai import ChatOpenAI
+from langgraph.prebuilt import create_react_agent
+from langchain_arcade import ArcadeToolManager
+
+async def create_agent():
+    tools = []
+    
+    # Get tools from MCP server
+    async with LanggraphMCPClient(server_params=server_params) as mcp_client:
+        tools.extend(await mcp_client.get_tools())
+    
+    # Add Arcade tools
+    tool_arcade_manager = ArcadeToolManager(api_key=os.getenv("ARCADE_API_KEY"))
+    tools.extend(tool_arcade_manager.get_tools(toolkits=["slack"]))
+    
+    # Create the agent with combined tools
+    model = ChatOpenAI(model="gpt-4")
+    graph = create_react_agent(model, tools=tools)
+    
+    return graph
+
+# Use the agent
+inputs = {
+    "messages": [HumanMessage(content="Analyze pampa.ai and send a summary to Slack")],
+}
+
+config = {
+    "configurable": {
+        "thread_id": "1",
+        "user_id": os.getenv("ARCADE_USER_ID"),
     }
-  }
-  ```
-</details>
+}
 
-<details>
-  <summary>Published Servers Configuration</summary>
-  ```
-  "mcpServers": {
-    "website_firecrawl_service": {
-      "command": "uvx",
-      "args": [
-        "website_firecrawl_service"
-      ]
-    }
-  }
-  ```
-</details>
-
-## Development
-
-### Building and Publishing
-
-To prepare the package for distribution:
-
-1. Sync dependencies and update lockfile:
-```bash
-uv sync
+result = await graph.ainvoke(inputs, config=config)
 ```
 
-2. Build package distributions:
-```bash
-uv build
+### Using the Firecrawl Service
+
+The Firecrawl service is implemented as an MCP server, allowing your agents to crawl and analyze websites:
+
+```python
+# Example configuration in your MCP server setup:
+server_params = StdioServerParameters(
+    command="uv",
+    args=[
+        "--directory",
+        "/path/to/firecrawl",
+        "run",
+        "website-firecrawl-service"
+    ]
+)
+
+# The Firecrawl service tools become available through the MCP client
+# Example usage in your agent's prompt:
+"Analyze the website example.com and provide a summary"
 ```
 
-This will create source and wheel distributions in the `dist/` directory.
+## Resources
 
-3. Publish to PyPI:
-```bash
-uv publish
-```
+- [MCP Official Documentation](https://modelcontextprotocol.io/docs)
+- [MCP GitHub Repository](https://github.com/modelcontextprotocol)
+- [LangGraph Documentation](https://python.langchain.com/docs/langgraph)
 
-Note: You'll need to set PyPI credentials via environment variables or command flags:
-- Token: `--token` or `UV_PUBLISH_TOKEN`
-- Or username/password: `--username`/`UV_PUBLISH_USERNAME` and `--password`/`UV_PUBLISH_PASSWORD`
-
-### Debugging
-
-Since MCP servers run over stdio, debugging can be challenging. For the best debugging
-experience, we strongly recommend using the [MCP Inspector](https://github.com/modelcontextprotocol/inspector).
-
-
-You can launch the MCP Inspector via [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) with this command:
-
-```bash
-npx @modelcontextprotocol/inspector uv --directory /Users/lgesuellip/Desktop/mcp_firecrawl/website_service run website-firecrawl-service
-```
-
-
-Upon launching, the Inspector will display a URL that you can access in your browser to begin debugging.
