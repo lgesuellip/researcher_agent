@@ -18,7 +18,7 @@ dependencies = [
 
 [[project.authors]]
 name = "lgesuellip"
-email = "lgesuellipinto@uade.edu.ar"
+email = "lautaro@pampa.ai"
 
 [build-system]
 requires = [ "hatchling",]
