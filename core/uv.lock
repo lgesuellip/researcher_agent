@@ -114,7 +114,7 @@ wheels = [
 
 [[package]]
 name = "arcadepy"
-version = "0.1.2"
+version = "1.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
@@ -124,9 +124,9 @@ dependencies = [
     { name = "sniffio" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/48/5d/4b0f2f25746ff7e64dbda4510542dd828a64df38bcfba8e6bbb53a555575/arcadepy-0.1.2.tar.gz", hash = "sha256:5f21352a30f0d91079cbb6bda2a580bc02720c44df60641dd5c323a12a01bf86", size = 102975 }
+sdist = { url = "https://files.pythonhosted.org/packages/36/fe/bf337dbf1eb841e93879b7772e39997d5c7f630b336ac5808fe33417c42d/arcadepy-1.1.1.tar.gz", hash = "sha256:4fd6db88f941af7be69b1b923c9f01725583d52af54099beeb13d53435e81062", size = 100706 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0a/f0/e08a0f02e849a0d826893674da28d2d7d5efd6c61022cb61b3cdf5a353ea/arcadepy-0.1.2-py3-none-any.whl", hash = "sha256:35bda167cd55e16025ce966c0e571a00fc69145f1b09e82d2b530047504a8b13", size = 105104 },
+    { url = "https://files.pythonhosted.org/packages/01/b0/ad0048819a8032eed519e5b9d22620dc741a90c7af350e527393a398c8d9/arcadepy-1.1.1-py3-none-any.whl", hash = "sha256:744f2a6d93f8b0edb226b806dfad8f4ef5aec777ba422c267203491a02a52271", size = 92502 },
 ]
 
 [[package]]
@@ -478,7 +478,7 @@ wheels = [
 
 [[package]]
 name = "langchain"
-version = "0.3.12"
+version = "0.3.19"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -492,27 +492,27 @@ dependencies = [
     { name = "sqlalchemy" },
     { name = "tenacity" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0a/f0/4a1e712a45285ea52c4c075d73ebc4d6d7bee610db17e4422d34133b4586/langchain-0.3.12.tar.gz", hash = "sha256:0d8247afbf37beb263b4adc29f7aa8a5ae83c43a6941894e2f9ba39d5c869e3b", size = 420316 }
+sdist = { url = "https://files.pythonhosted.org/packages/a2/cf/a064ef27d5f3154491c85783590a25d7ae22340cddedf9bf47496044e4eb/langchain-0.3.19.tar.gz", hash = "sha256:b96f8a445f01d15d522129ffe77cc89c8468dbd65830d153a676de8f6b899e7b", size = 10224228 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/de/48/f1457a56444134cd4531a8fc31a80b529ce157fce9c9cb7bb79cda7362d9/langchain-0.3.12-py3-none-any.whl", hash = "sha256:581ad93a9de12e4b957bc2af9ba8482eb86e3930e84c4ee20ed677da5e2311cd", size = 1009094 },
+    { url = "https://files.pythonhosted.org/packages/18/7d/0f4cc3317634195381f87c5d90268f29b9a31fda62aa7a7f36a1c27b06f3/langchain-0.3.19-py3-none-any.whl", hash = "sha256:1e16d97db9106640b7de4c69f8f5ed22eeda56b45b9241279e83f111640eff16", size = 1010630 },
 ]
 
 [[package]]
 name = "langchain-arcade"
-version = "0.1.2"
+version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "arcadepy" },
-    { name = "langchain-core" },
+    { name = "langgraph" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5c/89/01c4fae4368b406c018bd5f01d00dc1c3cafa2f43675f56ecf68fe5420a5/langchain_arcade-0.1.2.tar.gz", hash = "sha256:315fa5f66de25f532071fcd630ac2a5adbd29b94460b677879efa8090a561bfc", size = 5591 }
+sdist = { url = "https://files.pythonhosted.org/packages/5d/77/d924509d6996caf64d86bf11de2c704bc469c44c80abe97ec02c1cc23e6c/langchain_arcade-1.0.0.tar.gz", hash = "sha256:1bb8983b447189eb014544a80095fa483e661b718d3f08d0a2ab9dcb32e049c5", size = 6050 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f7/11/4b6ee64f52165cc77972f5a915c86ee82106a1810704cbb519c307495a40/langchain_arcade-0.1.2-py3-none-any.whl", hash = "sha256:217f2560ee39c12b104e3cd305cf70f688aa1ca7a77673e25725280842da5055", size = 6613 },
+    { url = "https://files.pythonhosted.org/packages/e5/f3/2e91fdbc36cd3ecb3fffc6532e9b4afb2774537604080247c919345d6290/langchain_arcade-1.0.0-py3-none-any.whl", hash = "sha256:9a36c1d89d9544553c698dca0859521be02fb1e25bee05a16f7448407c295d4d", size = 7077 },
 ]
 
 [[package]]
 name = "langchain-community"
-version = "0.3.12"
+version = "0.3.18"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -528,14 +528,14 @@ dependencies = [
     { name = "sqlalchemy" },
     { name = "tenacity" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/cf/15/97439b96bd3f8407ef0f049ea3fed7e5b2b00fcd9679428b94cafa3baf8e/langchain_community-0.3.12.tar.gz", hash = "sha256:b4694f34c7214dede03fe5a75e9f335e16bd788dfa6ca279302ad357bf0d0fc4", size = 1691757 }
+sdist = { url = "https://files.pythonhosted.org/packages/93/5f/0d81b0299bb8dc797dfc42ed19e7410bfab799eb25107dda5cdf5f703515/langchain_community-0.3.18.tar.gz", hash = "sha256:fa2889a8f0b2d22b5c306fd1b070c0970e1f11b604bf55fad2f4a1d0bf68a077", size = 33216713 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2f/b9/9d52879a1c1ee090d47530aa0d9d9a0cc5ca7f5ee9f1d8de784fec8fbff0/langchain_community-0.3.12-py3-none-any.whl", hash = "sha256:5a993c931d46dc07fcdfcdfa4d87095c5a15d37ff32b0c16e9ecf6f5caa58c9c", size = 2471646 },
+    { url = "https://files.pythonhosted.org/packages/f7/95/8e0c46842040e58fc252d82bcddc7d02e1e874aad98fdf729d25978c09ae/langchain_community-0.3.18-py3-none-any.whl", hash = "sha256:0d4a70144a1750045c4f726f9a43379ed2484178f76e4b8295bcef3a7fdf41d5", size = 2520606 },
 ]
 
 [[package]]
 name = "langchain-core"
-version = "0.3.28"
+version = "0.3.37"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jsonpatch" },
@@ -546,62 +546,75 @@ dependencies = [
     { name = "tenacity" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/de/f2/1787f9e7fcf6bee70f7a8f488ee95b814408706ab35d61dbba279fbe7361/langchain_core-0.3.28.tar.gz", hash = "sha256:407f7607e6b3c0ebfd6094da95d39b701e22e59966698ef126799782953e7f2c", size = 330743 }
+sdist = { url = "https://files.pythonhosted.org/packages/86/1d/692541c2ff9d8d7c847638f1244bddbb773c984fbfbe1728ad5f100222b7/langchain_core-0.3.37.tar.gz", hash = "sha256:cda8786e616caa2f68f7cc9e811b9b50e3b63fb2094333318b348e5961a7ea01", size = 527209 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9a/bf/07e63d4b4c41aa49daf4a4499e8010928ce8545469f0265544f925c95fff/langchain_core-0.3.28-py3-none-any.whl", hash = "sha256:a02f81ca53a8eed757133797e5a602ca80c1324bbecb0c5d86ef7bd3d6625372", size = 411553 },
+    { url = "https://files.pythonhosted.org/packages/6a/f5/9ce2a94bc49b64c0bf53b17524d5fc5c926070e911b11d489979d47d5491/langchain_core-0.3.37-py3-none-any.whl", hash = "sha256:8202fd6506ce139a3a1b1c4c3006216b1c7fffa40bdd1779f7d2c67f75eb5f79", size = 413717 },
+]
+
+[[package]]
+name = "langchain-mcp-adapters"
+version = "0.0.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "langchain-core" },
+    { name = "mcp" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7b/42/d0bed7e9de639d973366bff757276e5ff6b04b75eb4b98c5d0037aba8aa5/langchain_mcp_adapters-0.0.2.tar.gz", hash = "sha256:18f9d1668479304093c0f61db6b87a4da8af2a0632c41d62de8972f4d3b0168d", size = 3284 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/70/91/fedbf79b30051b31783c516e16378eaf9713b1c36545a4ff76db8fd124e8/langchain_mcp_adapters-0.0.2-py3-none-any.whl", hash = "sha256:40ecd8cb82971f920cb7de814f8e8913a48a5d26de5f6972defa38f18b7e8247", size = 4516 },
 ]
 
 [[package]]
 name = "langchain-openai"
-version = "0.2.14"
+version = "0.3.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "langchain-core" },
     { name = "openai" },
     { name = "tiktoken" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e5/fd/8256eba9a159f95a13c5bf7f1f49683de93b3876585b768e6be5dc3a5765/langchain_openai-0.2.14.tar.gz", hash = "sha256:7a514f309e356b182a337c0ed36ab3fbe34d9834a235a3b85cb7f91ae775d978", size = 43647 }
+sdist = { url = "https://files.pythonhosted.org/packages/72/67/4c2f371315bd1dd1163f3d1d48d271649e5c4b81b1982c38db3761b883a5/langchain_openai-0.3.6.tar.gz", hash = "sha256:7daf92e1cd98865ab5213ec5bec2cbd6c28f011e250714978b3a99c7e4fc88ce", size = 255792 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ed/54/63c8264d7dbc3bf31ba61bf97740fdd76386b2d4f9a58f58afd3961ce7d7/langchain_openai-0.2.14-py3-none-any.whl", hash = "sha256:d232496662f79ece9a11caf7d798ba863e559c771bc366814f7688e0fe664fe8", size = 50876 },
+    { url = "https://files.pythonhosted.org/packages/b5/49/302754c09f955e4a240efe83e48f4e79149d50ca52b3f4731365f1be94b1/langchain_openai-0.3.6-py3-none-any.whl", hash = "sha256:05f0869f6cc963e2ec9e2e54ea1038d9c2af784c67f0e217040dfc918b31649a", size = 54930 },
 ]
 
 [[package]]
 name = "langchain-text-splitters"
-version = "0.3.3"
+version = "0.3.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "langchain-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a9/03/75c2ef6e3f9360d1404f24a6dfa4e9a6bba04259c1d5a7369e189f4ce7cd/langchain_text_splitters-0.3.3.tar.gz", hash = "sha256:c596958dcab15fdfe0627fd36ce9d588d0a7e35593af70cd10d0a4a06d69b3ee", size = 21946 }
+sdist = { url = "https://files.pythonhosted.org/packages/0d/33/89912a07c63e4e818f9b0c8d52e4f9d600c97beca8a91db8c9dae6a1b28f/langchain_text_splitters-0.3.6.tar.gz", hash = "sha256:c537972f4b7c07451df431353a538019ad9dadff7a1073ea363946cea97e1bee", size = 40545 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7b/c6/1dc14d2932b45ec8dd78478473b76185377ad4e0556ff62b0716d92b34be/langchain_text_splitters-0.3.3-py3-none-any.whl", hash = "sha256:c2f8650457685072971edc8c52c9f8826496b3307f28004a7fd09eb32d4d819f", size = 27547 },
+    { url = "https://files.pythonhosted.org/packages/4c/f8/6b82af988e65af9697f6a2f25373fb173fd32d48b62772a8773c5184c870/langchain_text_splitters-0.3.6-py3-none-any.whl", hash = "sha256:e5d7b850f6c14259ea930be4a964a65fa95d9df7e1dbdd8bad8416db72292f4e", size = 31197 },
 ]
 
 [[package]]
 name = "langgraph"
-version = "0.2.60"
+version = "0.2.74"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "langchain-core" },
     { name = "langgraph-checkpoint" },
     { name = "langgraph-sdk" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/42/c9/3bff5c3bd28cc3a0848ba06ffa90dc3b1301249c17ee03ecdee6da249238/langgraph-0.2.60.tar.gz", hash = "sha256:24d1779e0506de5f8de57ffc7422f176a5f42caa342b8f8492a9a1763f8f9f48", size = 116668 }
+sdist = { url = "https://files.pythonhosted.org/packages/40/d2/e9daa099fc875ffe2ef5bab1af2ee95cec26489176babe4b0dc34f8ef0f2/langgraph-0.2.74.tar.gz", hash = "sha256:db6e63e0771e2e8fb17dc0e040007b32f009e0f114e35d8348e336eb15f068e5", size = 131360 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/93/ce/150789d181ea0570112c6fae330f477aa5f68fa425098c25c2c9b1556676/langgraph-0.2.60-py3-none-any.whl", hash = "sha256:0c454a04f358e8eb0d75cf05d129ae7d10fce1bda1b53d328ec346c718d57e56", size = 135708 },
+    { url = "https://files.pythonhosted.org/packages/df/3d/d6034923e0a03aa406b067e4777b611ffc65a8906a2efa214e845b3f84d4/langgraph-0.2.74-py3-none-any.whl", hash = "sha256:91a522df764e66068f1a6de09ea748cea0687912838f29218c1d1b92b1ca025f", size = 151433 },
 ]
 
 [[package]]
 name = "langgraph-checkpoint"
-version = "2.0.9"
+version = "2.0.16"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "langchain-core" },
     { name = "msgpack" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/61/64/ac32516240491107d43b62f83313b320a4d655314badb4ef3f35efc38025/langgraph_checkpoint-2.0.9.tar.gz", hash = "sha256:43847d7e385a2d9d2b684155920998e44ed42d2d1780719e4f6111fe3d6db84c", size = 33299 }
+sdist = { url = "https://files.pythonhosted.org/packages/01/66/5d4a2013a84c511be289bb4a5ef91cbaad28c091b6b366fdb79710a1458b/langgraph_checkpoint-2.0.16.tar.gz", hash = "sha256:49ba8cfa12b2aae845ccc3b1fbd1d7a8d3a6c4a2e387ab3a92fca40dd3d4baa5", size = 34206 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d8/63/b2ecb322ffc978e6bcf27e3786a0efa3142c57d58daeb4e4397196117030/langgraph_checkpoint-2.0.9-py3-none-any.whl", hash = "sha256:b546ed6129929b8941ac08af6ce5cd26c8ebe1d25883d3c48638d34ade91ce42", size = 37318 },
+    { url = "https://files.pythonhosted.org/packages/7c/63/03bc3dd304ead45b53313cab8727329e1d139a2d220f2d030c72242c860e/langgraph_checkpoint-2.0.16-py3-none-any.whl", hash = "sha256:dfab51076a6eddb5f9e146cfe1b977e3dd6419168b2afa23ff3f4e47973bf06f", size = 38291 },
 ]
 
 [[package]]
@@ -695,19 +708,21 @@ wheels = [
 
 [[package]]
 name = "mcp"
-version = "1.1.2"
+version = "1.2.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
     { name = "httpx" },
     { name = "httpx-sse" },
     { name = "pydantic" },
+    { name = "pydantic-settings" },
     { name = "sse-starlette" },
     { name = "starlette" },
+    { name = "uvicorn" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9b/f3/5cf212e60681ea6da0dbb6e0d1bc0ab2dbf5eebc749b69663d46f114fea1/mcp-1.1.2.tar.gz", hash = "sha256:694aa9df7a8641b24953c935eb72c63136dc948981021525a0add199bdfee402", size = 57628 }
+sdist = { url = "https://files.pythonhosted.org/packages/fc/30/51e4555826126e3954fa2ab1e934bf74163c5fe05e98f38ca4d0f8abbf63/mcp-1.2.1.tar.gz", hash = "sha256:c9d43dbfe943aa1530e2be8f54b73af3ebfb071243827b4483d421684806cb45", size = 103968 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/df/40/9883eac3718b860d4006eba1920bfcb628f0a1fe37fac46a4f4e391edca6/mcp-1.1.2-py3-none-any.whl", hash = "sha256:a4d32d60fd80a1702440ba4751b847a8a88957a1f7b059880953143e9759965a", size = 36652 },
+    { url = "https://files.pythonhosted.org/packages/4c/0d/6770742a84c8aa1d36c0d628896a380584c5759612e66af7446af07d8775/mcp-1.2.1-py3-none-any.whl", hash = "sha256:579bf9c9157850ebb1344f3ca6f7a3021b0123c44c9f089ef577a7062522f0fd", size = 66453 },
 ]
 
 [[package]]
@@ -720,6 +735,7 @@ dependencies = [
     { name = "jinja2" },
     { name = "langchain-arcade" },
     { name = "langchain-community" },
+    { name = "langchain-mcp-adapters" },
     { name = "langchain-openai" },
     { name = "langgraph" },
     { name = "langsmith" },
@@ -730,13 +746,14 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "arcadepy", specifier = ">=0.1.0,<0.2.0" },
+    { name = "arcadepy", specifier = ">=1.0.0,<2.0.0" },
     { name = "httpx", specifier = ">=0.27.1,<0.28.0" },
     { name = "jinja2", specifier = ">=3.1.2" },
-    { name = "langchain-arcade", specifier = ">=0.1.2,<0.2.0" },
-    { name = "langchain-community", specifier = ">=0.3.1" },
-    { name = "langchain-openai", specifier = ">=0.2.14,<0.3" },
-    { name = "langgraph", specifier = ">=0.2.60,<0.3" },
+    { name = "langchain-arcade", specifier = ">=1.0.0,<2.0.0" },
+    { name = "langchain-community", specifier = ">=0.3.17,<0.4" },
+    { name = "langchain-mcp-adapters", specifier = ">=0.0.1,<1" },
+    { name = "langchain-openai", specifier = ">=0.3.4,<0.4" },
+    { name = "langgraph", specifier = ">=0.2.70,<0.3" },
     { name = "langsmith", specifier = ">=0.1.129" },
     { name = "mcp", specifier = ">=1.1.0" },
     { name = "openai", specifier = ">=1.43.0" },
