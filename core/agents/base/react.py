@@ -23,8 +23,8 @@ async def build_agent():
 
     # Get the absolute path to the servers directory
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-    servers_dir = os.path.join(base_dir, "mcp_firecrawl", "researcher_agent", "servers")
-    
+    servers_dir = os.path.join(base_dir, "servers")
+    print(servers_dir)
     tools = []
     async with MultiServerMCPClient(
         {
@@ -52,3 +52,13 @@ async def build_agent():
             
             yield graph
 
+async def main():
+    async with build_agent() as graph:
+        inputs = {
+            "messages": [HumanMessage(content="A summary of pampa.ai website, and send it by slack to 'lautaro'")],
+        }
+        result = await graph.ainvoke(inputs)
+        print(result)
+
+if __name__ == "__main__":
+    asyncio.run(main())
