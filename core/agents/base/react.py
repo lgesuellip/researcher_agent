@@ -17,10 +17,29 @@ logger.setLevel(logging.INFO)
 
 logger.info("Starting the example client script.")
 
+import subprocess
+import sys
+
+def install_uv():
+    try:
+        subprocess.run(
+            ["curl", "-Ls", "https://astral.sh/uv/install.sh", "-o", "install_uv.sh"],
+            check=True
+        )
+        subprocess.run(
+            ["sh", "install_uv.sh"],
+            check=True
+        )
+        print("✅ uv installed successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Failed to install uv: {e}")
+        sys.exit(1)
+
+install_uv()
 
 @asynccontextmanager
 async def build_agent():
-
+    install_uv()
     # Get the absolute path to the servers directory
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     servers_dir = os.path.join(base_dir, "servers")
