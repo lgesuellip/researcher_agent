@@ -553,15 +553,15 @@ wheels = [
 
 [[package]]
 name = "langchain-mcp-adapters"
-version = "0.0.2"
+version = "0.0.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "langchain-core" },
     { name = "mcp" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7b/42/d0bed7e9de639d973366bff757276e5ff6b04b75eb4b98c5d0037aba8aa5/langchain_mcp_adapters-0.0.2.tar.gz", hash = "sha256:18f9d1668479304093c0f61db6b87a4da8af2a0632c41d62de8972f4d3b0168d", size = 3284 }
+sdist = { url = "https://files.pythonhosted.org/packages/bb/84/60cfc76dbe5e7a6721eacae531955e5aedcd65febb3398ca3a46e8d2ab1b/langchain_mcp_adapters-0.0.5.tar.gz", hash = "sha256:d05de412b2910ec652f8ef6008fb7f8ec80db9e4f06593db1d613ebafc15b83d", size = 8517 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/70/91/fedbf79b30051b31783c516e16378eaf9713b1c36545a4ff76db8fd124e8/langchain_mcp_adapters-0.0.2-py3-none-any.whl", hash = "sha256:40ecd8cb82971f920cb7de814f8e8913a48a5d26de5f6972defa38f18b7e8247", size = 4516 },
+    { url = "https://files.pythonhosted.org/packages/87/b7/96da8de4776160d41eb4b24e61b3056ed793d4414008f2e69b14427e5f8a/langchain_mcp_adapters-0.0.5-py3-none-any.whl", hash = "sha256:8601beb4692c64a8ef8961468ec73c24558804ff09a7c54612bd2d5225ac4ff8", size = 8402 },
 ]
 
 [[package]]
@@ -708,7 +708,7 @@ wheels = [
 
 [[package]]
 name = "mcp"
-version = "1.2.1"
+version = "1.4.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
@@ -720,9 +720,9 @@ dependencies = [
     { name = "starlette" },
     { name = "uvicorn" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/fc/30/51e4555826126e3954fa2ab1e934bf74163c5fe05e98f38ca4d0f8abbf63/mcp-1.2.1.tar.gz", hash = "sha256:c9d43dbfe943aa1530e2be8f54b73af3ebfb071243827b4483d421684806cb45", size = 103968 }
+sdist = { url = "https://files.pythonhosted.org/packages/50/cc/5c5bb19f1a0f8f89a95e25cb608b0b07009e81fd4b031e519335404e1422/mcp-1.4.1.tar.gz", hash = "sha256:b9655d2de6313f9d55a7d1df62b3c3fe27a530100cc85bf23729145b0dba4c7a", size = 154942 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4c/0d/6770742a84c8aa1d36c0d628896a380584c5759612e66af7446af07d8775/mcp-1.2.1-py3-none-any.whl", hash = "sha256:579bf9c9157850ebb1344f3ca6f7a3021b0123c44c9f089ef577a7062522f0fd", size = 66453 },
+    { url = "https://files.pythonhosted.org/packages/e8/0e/885f156ade60108e67bf044fada5269da68e29d758a10b0c513f4d85dd76/mcp-1.4.1-py3-none-any.whl", hash = "sha256:a7716b1ec1c054e76f49806f7d96113b99fc1166fc9244c2c6f19867cb75b593", size = 72448 },
 ]
 
 [[package]]
@@ -739,7 +739,6 @@ dependencies = [
     { name = "langchain-openai" },
     { name = "langgraph" },
     { name = "langsmith" },
-    { name = "mcp" },
     { name = "openai" },
     { name = "pydantic" },
 ]
@@ -751,11 +750,10 @@ requires-dist = [
     { name = "jinja2", specifier = ">=3.1.2" },
     { name = "langchain-arcade", specifier = ">=1.0.0,<2.0.0" },
     { name = "langchain-community", specifier = ">=0.3.17,<0.4" },
-    { name = "langchain-mcp-adapters", specifier = ">=0.0.1,<1" },
+    { name = "langchain-mcp-adapters", specifier = ">=0.0.5,<1" },
     { name = "langchain-openai", specifier = ">=0.3.4,<0.4" },
     { name = "langgraph", specifier = ">=0.2.70,<0.3" },
     { name = "langsmith", specifier = ">=0.1.129" },
-    { name = "mcp", specifier = ">=1.1.0" },
     { name = "openai", specifier = ">=1.43.0" },
     { name = "pydantic", specifier = ">=2.9.2" },
 ]
