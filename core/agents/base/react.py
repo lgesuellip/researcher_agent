@@ -70,14 +70,3 @@ async def build_agent():
             graph = create_react_agent(model, tools=tools)
             
             yield graph
-
-async def main():
-    async with build_agent() as graph:
-        inputs = {
-            "messages": [HumanMessage(content="A summary of pampa.ai website, and send it by slack to 'lautaro'")],
-        }
-        result = await graph.ainvoke(inputs)
-        print(result)
-
-if __name__ == "__main__":
-    asyncio.run(main())
