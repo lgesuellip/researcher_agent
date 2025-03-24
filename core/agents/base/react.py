@@ -6,6 +6,7 @@ from langchain_mcp_adapters.client import MultiServerMCPClient
 
 import asyncio
 import logging
+import os
 
 from dotenv import load_dotenv
 
@@ -20,6 +21,10 @@ logger.info("Starting the example client script.")
 @asynccontextmanager
 async def build_agent():
 
+    # Get the absolute path to the servers directory
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+    servers_dir = os.path.join(base_dir, "mcp_firecrawl", "researcher_agent", "servers")
+    
     tools = []
     async with MultiServerMCPClient(
         {
@@ -31,7 +36,7 @@ async def build_agent():
                 "command": "uv",
                 "args": [
                     "--directory",
-                    "/Users/lgesuellip/Desktop/mcp_firecrawl/researcher_agent/servers",
+                    servers_dir,
                     "run",
                     "website-firecrawl-service"
                 ],
