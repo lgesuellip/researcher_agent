@@ -19,25 +19,31 @@ logger.info("Starting the example client script.")
 async def build_agent():
 
     tools = []
-    async with MultiServerMCPClient(
-        {
-            "calendar": {
-                "url": os.getenv("CALENDAR_URL_MCP"),
-                "transport": "sse",
-            },
-            "firecrawl": {
-                "url": os.getenv("FIRECRAWL_URL_MCP"),
-                "transport": "sse",
-            }
-        }
-    ) as client:
     
-            tools = client.get_tools()
-            model = ChatOpenAI(
-                model="o3-mini",
-                reasoning_effort="medium",
-            )
+    # Create servers dictionary only with available URLs
+    servers = {}
+    
+    calendar_url = os.getenv("CALENDAR_URL_MCP")
+    if calendar_url:
+        servers["calendar"] = {
+            "url": calendar_url,
+            "transport": "sse",
+        }
+    
+    firecrawl_url = os.getenv("FIRECRAWL_URL_MCP")
+    if firecrawl_url:
+        servers["firecrawl"] = {
+            "url": firecrawl_url,
+            "transport": "sse",
+        }
+    
+    async with MultiServerMCPClient(servers) as client:
+        tools = client.get_tools()
+        model = ChatOpenAI(
+            model="o3-mini",
+            reasoning_effort="medium",
+        )
 
-            graph = create_react_agent(model, tools=tools)
-            
-            yield graph
+        graph = create_react_agent(model, tools=tools)
+        
+        yield graph
