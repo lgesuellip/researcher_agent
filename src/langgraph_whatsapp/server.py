@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 from twilio.twiml.messaging_response import MessagingResponse
-from .core import WhatsAppAgent
+from langgraph_whatsapp.agent import WhatsAppAgent
 
 APP = FastAPI()
 WSP_AGENT = WhatsAppAgent()
