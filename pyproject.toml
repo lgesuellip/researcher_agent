@@ -12,7 +12,10 @@ dependencies = [
     "langchain_community>=0.3.17,<0.4",
     "langchain_openai>=0.3.10,<0.4",
     "langgraph>=0.3.20,<0.4",
+    "langgraph-sdk>=0.1.61, <1",
     "langchain-mcp-adapters>=0.0.5,<1",
+    "twilio>=9.5.1, <10",
+
 ]
 
 [[project.authors]]
