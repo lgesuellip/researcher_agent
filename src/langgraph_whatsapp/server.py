@@ -1,9 +1,11 @@
 from fastapi import FastAPI, Request
 from twilio.twiml.messaging_response import MessagingResponse
 from langgraph_whatsapp.agent import WhatsAppAgent
+import logging
 
 APP = FastAPI()
 WSP_AGENT = WhatsAppAgent()
+LOGGER = logging.getLogger(__name__)
 
 @APP.post("/whatsapp")
 async def whatsapp_reply_twilio(request: Request):
@@ -23,8 +25,15 @@ async def whatsapp_reply_twilio(request: Request):
     msg = resp.message()
 
     if incoming_msg:
-        # Echo back the received message for testing
-        msg.body(f"Received: {incoming_msg} from {sender}")
+        # Process the message through the agent
+        try:
+            # Extract numeric sender ID from the phone number
+            sender_id = int(''.join(filter(str.isdigit, sender)))
+            response_text = await WSP_AGENT.invoke(sender_id, incoming_msg)
+            msg.body(response_text)
+        except Exception as e:
+            LOGGER.error(f"Error processing message: {e}")
+            msg.body("Sorry, I encountered an error processing your message.")
     else:
         msg.body("No message received")
 
