@@ -23,7 +23,7 @@ name = "lgesuellip"
 email = "lautaro@pampa.ai"
 
 [tool.hatch.build.targets.wheel]
-packages = ["agents"]
+packages = ["src/agents", "src/langgraph_whatsapp"]
 
 [project.scripts]
 react-agent = "agents.base.react:main"
