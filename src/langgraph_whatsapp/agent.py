@@ -1,6 +1,6 @@
 import logging
 from langgraph_sdk import get_client
-from langgraph_slack import config
+from langgraph_whatsapp import config
 import json
 
 LOGGER = logging.getLogger(__name__)
