@@ -1,10 +1,10 @@
 from fastapi import FastAPI, Request
 from twilio.twiml.messaging_response import MessagingResponse
-from langgraph_whatsapp.agent import WhatsAppAgent
+from langgraph_whatsapp.agent import Agent
 import logging
 
 APP = FastAPI()
-WSP_AGENT = WhatsAppAgent()
+WSP_AGENT = Agent()
 LOGGER = logging.getLogger(__name__)
 
 @APP.post("/whatsapp")
