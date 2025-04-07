@@ -50,13 +50,18 @@ class Agent:
                 },
                 "multitask_strategy": "interrupt",
                 "if_not_exists": "create",
+                "stream_mode": "values",
             }
-            LOGGER.info(f"Request payload: {json.dumps(request_payload, indent=2)}")
             
-            response = await self.client.runs.create(**request_payload)
-            LOGGER.info(f"Received response: {json.dumps(response, indent=2)}")
-            
-            return response["messages"][-1].content
+            async for chunk in self.client.runs.stream(
+                **request_payload
+            ):
+                LOGGER.info(f"Chunk: {chunk}")
+                final_response = chunk
+                # Optionally print chunks for debugging
+                print(chunk)
+            print(final_response)
+            return final_response["messages"][-1]["content"]
         except Exception as e:
             LOGGER.error(f"Error during invoke: {str(e)}", exc_info=True)
             raise
