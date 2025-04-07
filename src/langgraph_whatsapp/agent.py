@@ -2,6 +2,7 @@ import logging
 from langgraph_sdk import get_client
 from langgraph_whatsapp import config
 import json
+import uuid
 
 LOGGER = logging.getLogger(__name__)
 
@@ -33,10 +34,10 @@ class Agent:
             dict: The result from the LangGraph run
         """
         LOGGER.info(f"Invoking agent with thread_id: {id}, message: {user_message}")
-        
+
         try:
             request_payload = {
-                "thread_id": str(id),
+                "thread_id": str(uuid.uuid5(uuid.NAMESPACE_DNS, f"PHONE:{id}")),
                 "assistant_id": "agent",
                 "input": {
                     "messages": [
