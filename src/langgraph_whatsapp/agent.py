@@ -61,7 +61,7 @@ class Agent:
                 # Optionally print chunks for debugging
                 print(chunk)
             print(final_response)
-            return final_response["messages"][-1]["content"]
+            return final_response.data["message"]
         except Exception as e:
             LOGGER.error(f"Error during invoke: {str(e)}", exc_info=True)
             raise
