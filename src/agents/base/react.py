@@ -23,20 +23,13 @@ async def build_agent():
     # Create servers dictionary only with available URLs
     servers = {}
     
-    calendar_url = os.getenv("CALENDAR_URL_MCP")
-    if calendar_url:
-        servers["calendar"] = {
-            "url": calendar_url,
+    zapi_url = os.getenv("ZAPIER_URL_MCP")
+    if zapi_url:
+        servers["zapi"] = {
+            "url": zapi_url,
             "transport": "sse",
         }
-    
-    firecrawl_url = os.getenv("FIRECRAWL_URL_MCP")
-    if firecrawl_url:
-        servers["firecrawl"] = {
-            "url": firecrawl_url,
-            "transport": "sse",
-        }
-    
+
     async with MultiServerMCPClient(servers) as client:
         tools = client.get_tools()
         model = ChatOpenAI(
