@@ -36,7 +36,7 @@ class Agent:
         
         try:
             request_payload = {
-                "thread_id": str(1),
+                "thread_id": str(id),
                 "assistant_id": "agent",
                 "input": {
                     "messages": [
