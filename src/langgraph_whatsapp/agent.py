@@ -23,7 +23,7 @@ class Agent:
             LOGGER.error(f"Failed to parse CONFIG as JSON: {e}")
             raise
 
-    async def invoke(self, id: int, user_message: str) -> dict:
+    async def invoke(self, id: str, user_message: str) -> dict:
         """
         Process a user message through the LangGraph client.
         
@@ -37,20 +37,19 @@ class Agent:
 
         try:
             request_payload = {
-                "thread_id": str(uuid.uuid5(uuid.NAMESPACE_DNS, f"PHONE:{id}")),
+                "thread_id": str(uuid.uuid5(uuid.NAMESPACE_DNS, id)),
                 "assistant_id": "agent",
                 "input": {
                     "messages": [
                         {
                             "role": "user",
-                            "content": 'hi',
+                            "content": user_message,
                         }
                     ]
                 },
                 "config": self.graph_config,
                 "metadata": {
                     "event": "api_call",
-                    "user_message": 'hi',
                 },
                 "multitask_strategy": "interrupt",
                 "if_not_exists": "create",
