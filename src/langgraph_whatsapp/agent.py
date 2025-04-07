@@ -9,9 +9,6 @@ LOGGER = logging.getLogger(__name__)
 
 class Agent:
     def __init__(self):
-        LOGGER.info(f"Initializing Agent with LANGGRAPH_URL: {config.LANGGRAPH_URL}")
-        LOGGER.info(f"ASSISTANT_ID: {config.ASSISTANT_ID}")
-        LOGGER.info(f"Raw CONFIG: {config.CONFIG}")
         
         self.client = get_client(url=config.LANGGRAPH_URL)
         try:
@@ -38,7 +35,7 @@ class Agent:
         try:
             request_payload = {
                 "thread_id": str(uuid.uuid5(uuid.NAMESPACE_DNS, id)),
-                "assistant_id": "agent",
+                "assistant_id": config.ASSISTANT_ID,
                 "input": {
                     "messages": [
                         {

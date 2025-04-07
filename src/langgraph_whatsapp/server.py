@@ -9,9 +9,9 @@ LOGGER = logging.getLogger(__name__)
 
 @APP.post("/whatsapp")
 async def whatsapp_reply_twilio(request: Request):
-    print("Whatsapp reply twilio: {request.headers}")
-    print("Whatsapp reply twilio: {request.body}")
-    print("Whatsapp reply twilio: {request.auth}")
+    print(f"Whatsapp reply twilio: {request.headers}")
+    print(f"Whatsapp reply twilio: {request.body}")
+    print(f"Whatsapp reply twilio: {request.auth}")
 
     form_data = await request.form()
 
