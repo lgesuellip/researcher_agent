@@ -15,7 +15,8 @@ dependencies = [
     "langgraph-sdk>=0.1.61, <1",
     "langchain-mcp-adapters>=0.0.5,<1",
     "twilio>=9.5.1, <10",
-    "fastapi>=0.115.6"
+    "fastapi>=0.115.12",
+    "python-multipart>=0.0.20, <0.1.0"
 ]
 
 [[project.authors]]
