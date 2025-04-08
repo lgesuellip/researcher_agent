@@ -33,8 +33,7 @@ async def build_agent():
     async with MultiServerMCPClient(servers) as client:
         tools = client.get_tools()
         model = ChatOpenAI(
-            model="o3-mini",
-            reasoning_effort="medium",
+            model="gemini-2.0-flash-thinking-exp-01-21",
         )
 
         graph = create_react_agent(model, tools=tools)
