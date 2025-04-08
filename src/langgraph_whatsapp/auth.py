@@ -1,6 +1,6 @@
 from langgraph_sdk import Auth
 from twilio.request_validator import RequestValidator
-from config import TWILIO_AUTH_TOKEN
+from langgraph_whatsapp import config
 
 auth = Auth()
 
@@ -12,7 +12,7 @@ async def authenticate(request, path, headers, method):
     print(headers)
     print(method)
 
-    validator = RequestValidator(TWILIO_AUTH_TOKEN)
+    validator = RequestValidator(config.TWILIO_AUTH_TOKEN)
 
     request_valid = validator.validate(
         request.url,
