@@ -3,9 +3,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "mcp-client"
+name = "mcp-template"
 version = "0.1.0"
-description = "MCP Client"
+description = "MCP Template"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

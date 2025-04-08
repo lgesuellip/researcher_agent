@@ -15,7 +15,6 @@ class Agent:
             self.graph_config = (
                 json.loads(config.CONFIG) if isinstance(config.CONFIG, str) else config.CONFIG
             )
-            LOGGER.info(f"Parsed graph_config: {self.graph_config}")
         except json.JSONDecodeError as e:
             LOGGER.error(f"Failed to parse CONFIG as JSON: {e}")
             raise
@@ -56,12 +55,8 @@ class Agent:
             async for chunk in self.client.runs.stream(
                 **request_payload
             ):
-                LOGGER.info(f"Chunk: {chunk}")
                 final_response = chunk
-                # Optionally print chunks for debugging
-                print(chunk)
-            print(final_response)
-            return final_response.data["message"]
+            return final_response.data["messages"][-1]["content"]
         except Exception as e:
             LOGGER.error(f"Error during invoke: {str(e)}", exc_info=True)
             raise
