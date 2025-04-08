@@ -33,7 +33,7 @@ async def build_agent():
     async with MultiServerMCPClient(servers) as client:
         tools = client.get_tools()
         model = ChatGoogleGenerativeAI(
-            model="gemini-2.0-flash-thinking-exp-01-21",
+            model="gemini-2.0-flash-exp",
         )
 
         graph = create_react_agent(model, tools=tools)
