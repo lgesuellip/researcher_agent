@@ -1,4 +1,4 @@
-from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.prebuilt import create_react_agent
 from contextlib import asynccontextmanager
 from langchain_mcp_adapters.client import MultiServerMCPClient
@@ -32,7 +32,7 @@ async def build_agent():
 
     async with MultiServerMCPClient(servers) as client:
         tools = client.get_tools()
-        model = ChatOpenAI(
+        model = ChatGoogleGenerativeAI(
             model="gemini-2.0-flash-thinking-exp-01-21",
         )
 
