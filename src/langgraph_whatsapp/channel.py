@@ -19,7 +19,8 @@ class WhatsAppAgent:
         :return: Response containing TwiML XML or error
         """
         print(request.__dict__)
-        print(request.form().__dict__)
+        form_req = await request.form()
+        print(form_req.__dict__)
         
 
         form_ = await request.form()
