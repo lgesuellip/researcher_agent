@@ -9,7 +9,7 @@ WSP_AGENT = WhatsAppAgent()
 async def whatsapp_reply_twilio(request: Request):
     try:
         response = await WSP_AGENT.handle_message(request)
-        return Response(content=str(response), media_type="application/xml")
+        return Response(content=response, media_type="application/xml")
     except HTTPException as e:
         logging.error(f"Error handling WhatsApp request: {e.detail}")
         raise e
@@ -19,7 +19,7 @@ async def whatsapp_reply_twilio(request: Request):
 
 if __name__ == "__main__":
     import uvicorn
-    
+
     uvicorn.run(
         APP,
         host="0.0.0.0",

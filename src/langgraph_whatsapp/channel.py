@@ -19,9 +19,12 @@ class WhatsAppAgent:
         :return: Response containing TwiML XML or error
         """
         print(request.__dict__)
+        print(request.url)
         form_req = await request.form()
         print(form_req.__dict__)
-        
+        print(request.headers.get("x-twilio-signature", ""))
+        print(request.headers.get("X-Twilio-Signature", ""))
+
 
         form_ = await request.form()
         if not self.validator.validate(
