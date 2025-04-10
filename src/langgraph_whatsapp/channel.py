@@ -11,7 +11,7 @@ class WhatsAppAgent:
         self.agent = Agent()
         self.validator = RequestValidator(TWILIO_AUTH_TOKEN)
 
-    async def handle_message(self, request: Request) -> Response:
+    async def handle_message(self, request: Request) -> str:
         """
         Entrypoint for handling incoming WhatsApp messages with Twilio validation.
 
@@ -42,7 +42,7 @@ class WhatsAppAgent:
         twilio_resp = MessagingResponse()
         twilio_resp.message(agent_response)
 
-        return twilio_resp
+        return str(twilio_resp)
 
     def _process_message(self, sender: str, content: str) -> str:
         """
