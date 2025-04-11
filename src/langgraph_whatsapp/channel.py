@@ -22,17 +22,21 @@ class WhatsAppAgent:
         form_data = await request.form()
         post_vars = dict(form_data)
 
-        print(self.validator.__dict__)
-        print(self.validator.validate(
+        print("--- Twilio Validation ---")
+        print(f"URL used for validation: {str(request.url)}")
+        print(f"POST variables used for validation: {post_vars}")
+        print(f"X-Twilio-Signature header: {request.headers.get("X-Twilio-Signature", "")}")
+        print(f"Auth Token used: {self.validator.token.decode()[:5]}...{self.validator.token.decode()[-5:]}") # Print first/last 5 chars for verification
+
+        validation_result = self.validator.validate(
             str(request.url),
-            post_vars,  
+            post_vars,
             request.headers.get("X-Twilio-Signature", "")
-        ))
-        if not self.validator.validate(
-            str(request.url),
-            post_vars,  
-            request.headers.get("X-Twilio-Signature", "")
-        ):
+        )
+        print(f"Validation result: {validation_result}")
+        print("-------------------------")
+
+        if not validation_result:
             raise HTTPException(status_code=403, detail="Twilio signature validation failed")
 
         sender = form_data.get('From', "").strip() # e.g., 'whatsapp:+14155238886'
