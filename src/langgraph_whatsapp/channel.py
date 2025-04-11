@@ -42,14 +42,14 @@ class WhatsAppAgent:
         if not sender or not content:
              raise HTTPException(status_code=400, detail="Missing 'From' or 'Body' in request form")
 
-        agent_response = self._process_message(sender, content)
+        agent_response = await self._process_message(sender, content)
 
         twilio_resp = MessagingResponse()
         twilio_resp.message(agent_response)
 
         return str(twilio_resp)
 
-    def _process_message(self, sender: str, content: str) -> str:
+    async def _process_message(self, sender: str, content: str) -> str:
         """
         Process the incoming message and generate a response using the agent.
 
@@ -58,4 +58,4 @@ class WhatsAppAgent:
         :return: Response string from the agent
         """
         
-        return self.agent.invoke(id=sender, user_message=content)
+        return await self.agent.invoke(id=sender, user_message=content)
