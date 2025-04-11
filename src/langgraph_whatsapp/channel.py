@@ -19,13 +19,14 @@ class WhatsAppAgent:
         :param request: The incoming FastAPI request object
         :return: Response containing TwiML XML or error
         """
+        form_ = await request.form()
+
         print(self.validator.__dict__)
         print(self.validator.validate(
             str(request.url),
             form_,  
             request.headers.get("X-Twilio-Signature", "")
         ))
-        form_ = await request.form()
         if not self.validator.validate(
             str(request.url),
             form_,  
