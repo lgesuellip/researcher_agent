@@ -9,6 +9,7 @@ class WhatsAppAgent:
         if not TWILIO_AUTH_TOKEN:
             raise ValueError("TWILIO_AUTH_TOKEN is not configured or empty.")
         self.agent = Agent()
+        print(TWILIO_AUTH_TOKEN)
         self.validator = RequestValidator(TWILIO_AUTH_TOKEN)
 
     async def handle_message(self, request: Request) -> str:
@@ -18,10 +19,15 @@ class WhatsAppAgent:
         :param request: The incoming FastAPI request object
         :return: Response containing TwiML XML or error
         """
-
+        print(self.validator.__dict__)
+        print(self.validator.validate(
+            str(request.url),
+            form_,  
+            request.headers.get("X-Twilio-Signature", "")
+        ))
         form_ = await request.form()
         if not self.validator.validate(
-            str(f"{request.url}/whatsapp"),
+            str(request.url),
             form_,  
             request.headers.get("X-Twilio-Signature", "")
         ):
