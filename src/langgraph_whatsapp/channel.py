@@ -25,7 +25,8 @@ class WhatsAppAgent:
         print("--- Twilio Validation ---")
         print(f"URL used for validation: {str(request.url)}")
         print(f"POST variables used for validation: {post_vars}")
-        print(f"X-Twilio-Signature header: {request.headers.get("X-Twilio-Signature", "")}")
+        signature_header = request.headers.get("X-Twilio-Signature", "")
+        print(f"X-Twilio-Signature header: {signature_header}")
         token_str = self.validator.token.decode()
         token_start = token_str[:5]
         token_end = token_str[-5:]
