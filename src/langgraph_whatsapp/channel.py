@@ -23,7 +23,11 @@ class WhatsAppAgent:
         post_vars = dict(form_data)
 
         print("--- Twilio Validation ---")
-        print(f"URL used for validation: {str(request.url)}")
+        # Construct the URL using the forwarded headers to match what Twilio expects
+        forwarded_proto = request.headers.get("x-forwarded-proto", "http")
+        forwarded_host = request.headers.get("x-forwarded-host", request.headers.get("host", "localhost"))
+        url = f"{forwarded_proto}://{forwarded_host}{request.url.path}"
+        print(f"URL used for validation: {url}")
         print(f"POST variables used for validation: {post_vars}")
         signature_header = request.headers.get("X-Twilio-Signature", "")
         print(f"X-Twilio-Signature header: {signature_header}")
@@ -33,9 +37,9 @@ class WhatsAppAgent:
         print(f"Auth Token used: {token_start}...{token_end}")
 
         validation_result = self.validator.validate(
-            str(request.url),
+            url,  # Use the manually constructed URL
             post_vars,
-            request.headers.get("X-Twilio-Signature", "")
+            signature_header
         )
         print(f"Validation result: {validation_result}")
         print("-------------------------")
