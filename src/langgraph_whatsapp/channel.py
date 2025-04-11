@@ -19,23 +19,24 @@ class WhatsAppAgent:
         :param request: The incoming FastAPI request object
         :return: Response containing TwiML XML or error
         """
-        form_ = await request.form()
+        form_data = await request.form()
+        post_vars = dict(form_data)
 
         print(self.validator.__dict__)
         print(self.validator.validate(
             str(request.url),
-            form_,  
+            post_vars,  
             request.headers.get("X-Twilio-Signature", "")
         ))
         if not self.validator.validate(
             str(request.url),
-            form_,  
+            post_vars,  
             request.headers.get("X-Twilio-Signature", "")
         ):
             raise HTTPException(status_code=403, detail="Twilio signature validation failed")
 
-        sender = form_.get('From', "").strip() # e.g., 'whatsapp:+14155238886'
-        content = form_.get('Body', "").strip()
+        sender = form_data.get('From', "").strip() # e.g., 'whatsapp:+14155238886'
+        content = form_data.get('Body', "").strip()
 
         if not sender or not content:
              raise HTTPException(status_code=400, detail="Missing 'From' or 'Body' in request form")
