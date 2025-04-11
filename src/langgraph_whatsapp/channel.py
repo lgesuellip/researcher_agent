@@ -9,7 +9,6 @@ class WhatsAppAgent:
         if not TWILIO_AUTH_TOKEN:
             raise ValueError("TWILIO_AUTH_TOKEN is not configured or empty.")
         self.agent = Agent()
-        print(TWILIO_AUTH_TOKEN)
         self.validator = RequestValidator(TWILIO_AUTH_TOKEN)
 
     async def handle_message(self, request: Request) -> str:
@@ -22,27 +21,17 @@ class WhatsAppAgent:
         form_data = await request.form()
         post_vars = dict(form_data)
 
-        print("--- Twilio Validation ---")
         # Construct the URL using the forwarded headers to match what Twilio expects
         forwarded_proto = request.headers.get("x-forwarded-proto", "http")
         forwarded_host = request.headers.get("x-forwarded-host", request.headers.get("host", "localhost"))
         url = f"{forwarded_proto}://{forwarded_host}{request.url.path}"
-        print(f"URL used for validation: {url}")
-        print(f"POST variables used for validation: {post_vars}")
         signature_header = request.headers.get("X-Twilio-Signature", "")
-        print(f"X-Twilio-Signature header: {signature_header}")
-        token_str = self.validator.token.decode()
-        token_start = token_str[:5]
-        token_end = token_str[-5:]
-        print(f"Auth Token used: {token_start}...{token_end}")
 
         validation_result = self.validator.validate(
-            url,  # Use the manually constructed URL
+            url,
             post_vars,
             signature_header
         )
-        print(f"Validation result: {validation_result}")
-        print("-------------------------")
 
         if not validation_result:
             raise HTTPException(status_code=403, detail="Twilio signature validation failed")
@@ -69,4 +58,4 @@ class WhatsAppAgent:
         :return: Response string from the agent
         """
         
-        return self.agent.invoke(id=sender, message=content)
+        return self.agent.invoke(id=sender, user_message=content)
