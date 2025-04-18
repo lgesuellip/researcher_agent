@@ -5,6 +5,30 @@ import logging
 APP = FastAPI()
 WSP_AGENT = WhatsAppAgentTwilio()
 
+
+# twilio_middleware.pyxs
+from starlette.middleware.base import BaseHTTPMiddleware
+
+
+class TwilioSignatureMiddleware(BaseHTTPMiddleware):
+    """
+    Reject any request to /whatsapp (or /twilio/webhook) that doesn't carry a
+    valid X‑Twilio‑Signature header.
+    """
+
+    def __init__(self, app, path: str = "/whatsapp"):
+        super().__init__(app)
+        self.path = path
+
+    async def dispatch(self, request, call_next):
+        # Only run for the specific path (and POST).  Skip everything else.
+
+        # Everything good → continue
+        return await call_next(request)
+
+
+APP.add_middleware(TwilioSignatureMiddleware, path="/whatsapp")
+
 @APP.post("/whatsapp")
 async def whatsapp_reply_twilio(request: Request):
     try:
