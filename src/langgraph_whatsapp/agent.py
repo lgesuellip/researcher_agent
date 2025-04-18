@@ -57,13 +57,6 @@ class Agent:
                             if not auth_token:
                                 print("Warning: TWILIO_AUTH_TOKEN not configured, may fail to access media")
                             
-                            # Download the image with authentication
-                            response = requests.get(media_url, auth=('', auth_token) if auth_token else None)
-                            response.raise_for_status()
-                            
-                            # Get content type from response or use the one provided
-                            content_type = response.headers.get('Content-Type', media['content_type'])
-                            
                             # Use publicly accessible placeholder image if Twilio auth fails
                             message_content.append({
                                 "type": "image_url",
@@ -72,7 +65,7 @@ class Agent:
                                     "detail": "high",
                                     "auth": {
                                         "type": "basic",
-                                        "username": "",
+                                        "username": config.TWILIO_ACCOUNT_SID,
                                         "password": auth_token if auth_token else ""
                                     }
                                 }
