@@ -11,37 +11,32 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from twilio.request_validator import RequestValidator
 from src.langgraph_whatsapp.config import TWILIO_AUTH_TOKEN
 
-class TwilioSignatureMiddleware(BaseHTTPMiddleware):
-    """
-    Reject any request to /whatsapp (or /twilio/webhook) that doesn't carry a
-    valid X‑Twilio‑Signature header.
-    """
+from urllib.parse import parse_qs
 
+class TwilioSignatureMiddleware(BaseHTTPMiddleware):
     def __init__(self, app, path: str = "/whatsapp"):
         super().__init__(app)
         self.path = path
+        self.validator = RequestValidator(TWILIO_AUTH_TOKEN)
 
     async def dispatch(self, request, call_next):
-        # Only run for the specific path (and POST).  Skip everything else.
         if request.url.path == self.path and request.method.upper() == "POST":
-            form_data = await request.form()
-            post_vars = dict(form_data)
+            # ❶ Read the raw body ONCE
+            raw = await request.body()
 
-            validator = RequestValidator(TWILIO_AUTH_TOKEN)
-            # Construct the URL using the forwarded headers to match what Twilio expects
+            # ❷ Validate the signature
+            form_dict = {k: v[0] for k, v in parse_qs(raw.decode()).items()}
             forwarded_proto = request.headers.get("x-forwarded-proto", "http")
-            forwarded_host = request.headers.get("x-forwarded-host", request.headers.get("host", "localhost"))
+            forwarded_host  = request.headers.get("x-forwarded-host",
+                                                  request.headers.get("host"))
             url = f"{forwarded_proto}://{forwarded_host}{request.url.path}"
-            signature_header = request.headers.get("X-Twilio-Signature", "")
+            sig = request.headers.get("X-Twilio-Signature", "")
 
-            if not validator.validate(
-                url,
-                post_vars,
-                signature_header
-            ):
-                raise HTTPException(status_code=401, detail="Invalid Twilio signature")
+            if not self.validator.validate(url, form_dict, sig):
+                return Response(status_code=401, content="Invalid signature")
 
-        # Everything good → continue
+            # ❸ Put the body back so downstream can read it again
+            request._body = raw        # ✨ Starlette’s accepted rewind trick
         return await call_next(request)
 
 
