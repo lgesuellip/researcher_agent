@@ -6,8 +6,6 @@
     "http": {
       "app": "./src/langgraph_whatsapp/server.py:APP"
     },
-    "auth": {
-      "path": "./src/langgraph_whatsapp/auth.py:auth"
-    },
+    "public_paths": ["/whatsapp"],
     "env": ".env"
   }
