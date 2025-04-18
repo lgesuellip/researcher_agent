@@ -1,120 +1,143 @@
+"""
+agent.py – fully patched
+
+▪  Converts **every** Twilio /Media/ URL to an inline data‑URI before it ever
+  reaches Gemini, so the model no longer tries to re‑download the file (and
+  thus never gets a 401).
+▪  Replaces the bad `print(..., exc_info=True)` with proper logging so the
+  original stack‑trace is preserved.
+"""
+
+import asyncio
+import base64
+import json
 import logging
+import mimetypes
+import os
+import uuid
+from typing import Any, Dict, List
+
+import requests
 from langgraph_sdk import get_client
 from langgraph_whatsapp import config
-import json
-import uuid
-import requests
-import base64
-import mimetypes
-from urllib.parse import urlparse, parse_qs
 
 LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.INFO)  # or DEBUG
 
 
+# ──────────────────────────────────────────────────────────────────────────────
+# Helper ─ turn a Twilio URL into a data URI (once)
+# ──────────────────────────────────────────────────────────────────────────────
+def twilio_url_to_data_uri(url: str) -> str:
+    """Download the Twilio media and return a base‑64 data URI."""
+    sid = config.TWILIO_ACCOUNT_SID
+    token = config.TWILIO_AUTH_TOKEN
+    if not sid or not token:
+        raise RuntimeError("Twilio credentials are not configured")
+
+    res = requests.get(url, auth=(sid, token), timeout=15)
+    res.raise_for_status()
+    mime = mimetypes.guess_type(url)[0] or "image/jpeg"
+    data = base64.b64encode(res.content).decode()
+    return f"data:{mime};base64,{data}"
+
+
+def sanitize_parts(parts: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Replace any Twilio image_url in a single message with a data URI."""
+    new_parts = []
+    for part in parts:
+        if part.get("type") == "image_url":
+            img_url = part["image_url"]["url"]
+            if img_url.startswith("https://api.twilio.com"):
+                try:
+                    part["image_url"]["url"] = twilio_url_to_data_uri(img_url)
+                except Exception as err:
+                    LOGGER.warning("Could not inline %s – skipping (%s)", img_url, err)
+                    continue  # drop the part instead of crashing
+        new_parts.append(part)
+    return new_parts
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# WhatsApp Agent
+# ──────────────────────────────────────────────────────────────────────────────
 class Agent:
     def __init__(self):
-        
         self.client = get_client(url=config.LANGGRAPH_URL)
         try:
             self.graph_config = (
-                json.loads(config.CONFIG) if isinstance(config.CONFIG, str) else config.CONFIG
+                json.loads(config.CONFIG)
+                if isinstance(config.CONFIG, str)
+                else config.CONFIG
             )
         except json.JSONDecodeError as e:
-            LOGGER.error(f"Failed to parse CONFIG as JSON: {e}")
+            LOGGER.exception("CONFIG is not valid JSON")
             raise
 
-    async def invoke(self, id: str, user_message: str, media: dict = None) -> dict:
+    # ──────────────────────────────────────────────────────────────────────
+    async def invoke(
+        self, id: str, user_message: str, media: Dict[str, str] | None = None
+    ) -> Dict[str, Any]:
         """
-        Process a user message through the LangGraph client.
-        
-        Args:
-            id: The unique identifier for the conversation
-            user_message: The message content from the user
-            media: Dictionary with image media data (url and content_type)
-            
-        Returns:
-            dict: The result from the LangGraph run
+        Send a WhatsApp text + optional image through the LangGraph assistant.
+        Media is always inlined as a data URI before the call.
         """
-        print(f"Invoking agent with thread_id: {id}, message: {user_message}")
+        thread_id = str(uuid.uuid5(uuid.NAMESPACE_DNS, id))
+        LOGGER.info("Invoking agent thread=%s", thread_id)
 
         try:
-            message_content = []
+            # 1) build parts for *this* user turn
+            parts: List[Dict[str, Any]] = []
 
-            # Check if media is provided and process it
+            # -- optional image
             if media and media.get("url"):
-                media_url = media["url"]
-                print(f"Processing media URL: {media_url}")
-
-                # Get auth credentials
-                auth_token = config.TWILIO_AUTH_TOKEN
-                account_sid = config.TWILIO_ACCOUNT_SID
-                                
-                if not auth_token or not account_sid:
-                    print("Warning: TWILIO_AUTH_TOKEN or TWILIO_ACCOUNT_SID not configured, skipping media processing.")
-                    # Optionally raise an error or just skip adding the image
-                    # raise ValueError("Missing Twilio credentials")
-                else:
-                    # Download the image directly with auth
-                    try:
-                        response = requests.get(media_url, auth=(account_sid, auth_token))
-                        response.raise_for_status() # Raise an exception for bad status codes
-                        img = response.content
-                        
-                        # Determine the mime type or use image/jpeg as fallback
-                        mime = media.get('content_type') or mimetypes.guess_type(media_url)[0] or "image/jpeg"
-                        
-                        # Convert to data URL
-                        data_url = f"data:{mime};base64," + base64.b64encode(img).decode()
-                        
-                        # Add image as a data URL
-                        message_content.append({
+                try:
+                    data_uri = twilio_url_to_data_uri(media["url"])
+                    parts.append(
+                        {
                             "type": "image_url",
-                            "image_url": {
-                                "url": data_url,
-                                "detail": "high"
-                            }
-                        })
-                    except requests.exceptions.RequestException as req_err:
-                        print(f"Failed to download media from {media_url}: {req_err}")
-                    except Exception as e:
-                        print(f"Error processing media: {e}")
+                            "image_url": {"url": data_uri, "detail": "high"},
+                        }
+                    )
+                except Exception as img_err:
+                    LOGGER.warning("Image skipped: %s", img_err)
 
-            # Always add the text message content if it exists
+            # -- user text
             if user_message:
-                 message_content.append({
-                     "type": "text",
-                     "text": user_message
-                 })
+                parts.append({"type": "text", "text": user_message})
 
-
+            # 2) final payload
             request_payload = {
-                "thread_id": str(uuid.uuid5(uuid.NAMESPACE_DNS, id)),
+                "thread_id": thread_id,
                 "assistant_id": config.ASSISTANT_ID,
                 "input": {
                     "messages": [
                         {
                             "role": "user",
-                            # Use the constructed message_content (potentially with image and text)
-                            "content": message_content 
+                            # ensure no raw Twilio links leak through
+                            "content": sanitize_parts(parts),
                         }
                     ]
                 },
                 "config": self.graph_config,
-                "metadata": {
-                    "event": "api_call",
-                },
+                "metadata": {"event": "api_call"},
                 "multitask_strategy": "interrupt",
                 "if_not_exists": "create",
                 "stream_mode": "values",
             }
-            
-            print(f"Request payload: {json.dumps(request_payload, indent=2)}")
-            
-            async for chunk in self.client.runs.stream(
-                **request_payload
-            ):
-                final_response = chunk
-            return final_response.data["messages"][-1]["content"]
-        except Exception as e:
-            print(f"Error during invoke: {str(e)}", exc_info=True)
+
+            LOGGER.debug("Payload =>\n%s", json.dumps(request_payload, indent=2))
+
+            # 3) stream the run and return the assistant’s last message
+            final = None
+            async for chunk in self.client.runs.stream(**request_payload):
+                final = chunk
+
+            if not final or "messages" not in final.data:
+                raise RuntimeError("Assistant returned no messages")
+
+            return final.data["messages"][-1]["content"]
+
+        except Exception:
+            LOGGER.exception("Error during invoke")
             raise
