@@ -24,16 +24,6 @@ class WhatsAppAgent(ABC):
         """
         pass
 
-    @abstractmethod
-    async def validate_request(self, request: Request) -> bool:
-        """
-        Validate the incoming request authenticity.
-        
-        :param request: The incoming request object
-        :return: True if request is valid, False otherwise
-        """
-        pass
-
 class WhatsAppAgentTwilio(WhatsAppAgent):
     def __init__(self):
         if not TWILIO_AUTH_TOKEN:
@@ -41,27 +31,6 @@ class WhatsAppAgentTwilio(WhatsAppAgent):
         self.agent = Agent()
         self.validator = RequestValidator(TWILIO_AUTH_TOKEN)
 
-    async def validate_request(self, request: Request) -> bool:
-        """
-        Validate the Twilio signature in the request.
-        
-        :param request: The incoming FastAPI request object
-        :return: True if validation succeeds, False otherwise
-        """
-        form_data = await request.form()
-        post_vars = dict(form_data)
-
-        # Construct the URL using the forwarded headers to match what Twilio expects
-        forwarded_proto = request.headers.get("x-forwarded-proto", "http")
-        forwarded_host = request.headers.get("x-forwarded-host", request.headers.get("host", "localhost"))
-        url = f"{forwarded_proto}://{forwarded_host}{request.url.path}"
-        signature_header = request.headers.get("X-Twilio-Signature", "")
-
-        return self.validator.validate(
-            url,
-            post_vars,
-            signature_header
-        )
 
     async def handle_message(self, request: Request) -> str:
         """
