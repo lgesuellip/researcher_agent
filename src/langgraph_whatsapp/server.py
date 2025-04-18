@@ -1,9 +1,9 @@
 from fastapi import FastAPI, Request, Response, HTTPException
-from langgraph_whatsapp.channel import WhatsAppAgent
+from langgraph_whatsapp.channel import WhatsAppAgentTwilio
 import logging
 
 APP = FastAPI()
-WSP_AGENT = WhatsAppAgent()
+WSP_AGENT = WhatsAppAgentTwilio()
 
 @APP.post("/whatsapp")
 async def whatsapp_reply_twilio(request: Request):
