@@ -1,7 +1,6 @@
 from langgraph_whatsapp.agent import Agent
 from twilio.twiml.messaging_response import MessagingResponse
 from fastapi import Request, HTTPException
-from twilio.request_validator import RequestValidator
 from src.langgraph_whatsapp.config import TWILIO_AUTH_TOKEN
 from abc import ABC, abstractmethod
 import logging
@@ -29,8 +28,6 @@ class WhatsAppAgentTwilio(WhatsAppAgent):
         if not TWILIO_AUTH_TOKEN:
             raise ValueError("TWILIO_AUTH_TOKEN is not configured or empty.")
         self.agent = Agent()
-        self.validator = RequestValidator(TWILIO_AUTH_TOKEN)
-
 
     async def handle_message(self, request: Request) -> str:
         """
@@ -39,9 +36,6 @@ class WhatsAppAgentTwilio(WhatsAppAgent):
         :param request: The incoming FastAPI request object
         :return: Response containing TwiML XML or error
         """
-        # Validate the request
-        if not await self.validate_request(request):
-            raise HTTPException(status_code=403, detail="Twilio signature validation failed")
 
         form_data = await request.form()
         sender = form_data.get('From', "").strip() # e.g., 'whatsapp:+14155238886'
