@@ -27,7 +27,7 @@ class TwilioSignatureMiddleware(BaseHTTPMiddleware):
         return await call_next(request)
 
 
-APP.add_middleware(TwilioSignatureMiddleware, path="/whatsapp")
+#APP.add_middleware(TwilioSignatureMiddleware, path="/whatsapp")
 
 @APP.post("/whatsapp")
 async def whatsapp_reply_twilio(request: Request):
