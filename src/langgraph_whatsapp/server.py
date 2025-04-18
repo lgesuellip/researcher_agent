@@ -23,23 +23,23 @@ class TwilioSignatureMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request, call_next):
         # Only run for the specific path (and POST).  Skip everything else.
+        if request.url.path == self.path and request.method.upper() == "POST":
+            form_data = await request.form()
+            post_vars = dict(form_data)
 
-        form_data = await request.form()
-        post_vars = dict(form_data)
+            validator = RequestValidator(TWILIO_AUTH_TOKEN)
+            # Construct the URL using the forwarded headers to match what Twilio expects
+            forwarded_proto = request.headers.get("x-forwarded-proto", "http")
+            forwarded_host = request.headers.get("x-forwarded-host", request.headers.get("host", "localhost"))
+            url = f"{forwarded_proto}://{forwarded_host}{request.url.path}"
+            signature_header = request.headers.get("X-Twilio-Signature", "")
 
-        validator = RequestValidator(TWILIO_AUTH_TOKEN)
-        # Construct the URL using the forwarded headers to match what Twilio expects
-        forwarded_proto = request.headers.get("x-forwarded-proto", "http")
-        forwarded_host = request.headers.get("x-forwarded-host", request.headers.get("host", "localhost"))
-        url = f"{forwarded_proto}://{forwarded_host}{request.url.path}"
-        signature_header = request.headers.get("X-Twilio-Signature", "")
-
-        if not validator.validate(
-            url,
-            post_vars,
-            signature_header
-        ):
-            raise HTTPException(status_code=401, detail="Invalid Twilio signature")
+            if not validator.validate(
+                url,
+                post_vars,
+                signature_header
+            ):
+                raise HTTPException(status_code=401, detail="Invalid Twilio signature")
 
         # Everything good → continue
         return await call_next(request)
